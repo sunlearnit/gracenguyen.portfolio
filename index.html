@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Khanh Xuan Nguyen — Portfolio</title>
+  <meta name="description" content="Khanh Xuan Nguyen: E-commerce student, digital marketer, and creative strategist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <style>
+/* =================== RESET & VARIABLES =================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Neutral, professional palette */
+  --bg:#f7f9fc; /* very light neutral background */
+  --grid:rgba(150,150,150,.07);
+  --primary:#2c3e50; /* dark slate for main text */
+  --accent:#5a6d7e; /* muted blue‑gray for accents */
+  --muted:#7f8c8d; /* secondary text */
+  --radius:12px;--win-radius:10px;
+  --shadow:0 8px 32px rgba(0,0,0,.08);
+  --font-sans:'Inter',system-ui,sans-serif;
+  --font-serif:'Instrument Serif',Georgia,serif;
+  --font-hand:'Caveat',cursive;
+}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);color:var(--text);
+  background:var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  overflow:hidden;height:100dvh;
+  cursor:default;
+  user-select:none;
+}
+a{color:var(--pink-deep);text-decoration:none}
+a:hover{text-decoration:underline}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
+
+/* =================== MENU BAR =================== */
+.menubar{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  height:32px;padding:0 16px;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(220,180,195,.25);
+  font-size:.78rem;
+}
+.menubar .left{display:flex;gap:16px;align-items:center}
+.menubar .mark{color:var(--pink-deep);font-size:.9rem}
+.mb-link{font-weight:400;opacity:.7;transition:opacity .15s}
+.mb-link:hover,.mb-link.strong{opacity:1}
+.mb-link.strong{font-weight:600}
+.menubar .right{display:flex;gap:12px;align-items:center;color:var(--muted)}
+.status{letter-spacing:3px}
+
+/* =================== DESKTOP =================== */
+.desktop{
+  position:fixed;top:32px;left:0;right:0;bottom:0;
+  overflow:hidden;
+}
+
+/* =================== STICKY NOTE =================== */
+.sticky{
+  position:absolute;left:3%;top:6%;z-index:5;
+  width:220px;padding:14px 16px 18px;
+  background:#fff9a8;
+  box-shadow:2px 3px 12px rgba(0,0,0,.08);
+  transform:rotate(-1.5deg);
+  font-size:.78rem;line-height:1.55;
+  border-radius:2px;
+  cursor:grab;
+}
+.sticky:active{cursor:grabbing}
+.sticky strong{font-size:.82rem}
+.sticky ul{list-style:none;margin-top:6px}
+.sticky li::before{content:'• ';color:var(--pink-deep)}
+.sticky .done{text-decoration:line-through;opacity:.45}
+
+/* =================== WELCOME TEXT =================== */
+.welcome{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  pointer-events:auto;
+  z-index:1;
+}
+.welcome p{
+  font-family:var(--font-hand);
+  font-size:clamp(1rem,2.5vw,1.4rem);
+  color:var(--muted);
+  margin-bottom:-4px;
+}
+.welcome h1{
+  font-family:var(--font-serif);font-style:italic;
+  font-size:clamp(3rem,9vw,6.5rem);
+  font-weight:400;
+  letter-spacing:-.02em;
+  color:var(--text);
+  line-height:1;
+  white-space:nowrap;
+}
+.welcome h1 .ltr{
+  display:inline-block;transition:transform .22s,color .22s,margin .22s;
+  will-change:transform;
+}
+
+/* =================== ICONS =================== */
+.icon{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  width:90px;
+  text-align:center;
+  cursor:pointer;
+  transition:filter .15s;
+  z-index:2;
+}
+.icon:hover{filter:brightness(1.05)}
+.icon .ico{width:52px;height:auto;flex-shrink:0}
+.icon .ico.doc{width:38px}
+.icon .label{
+  font-size:.68rem;line-height:1.3;
+  word-wrap:break-word;
+  max-width:88px;
+}
+
+/* =================== WINDOWS =================== */
+.window{
+  position:absolute;
+  min-width:260px;
+  background:#fff;
+  border-radius:var(--win-radius);
+  box-shadow:var(--shadow);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  z-index:10;
+  animation:winIn .28s cubic-bezier(.22,1,.36,1);
+  transition:border-radius .3s;
+}
+@keyframes winIn{from{opacity:0;transform:scale(.92)}}
+.window.max{
+  left:0!important;top:0!important;
+  width:100%!important;height:100%;
+  border-radius:0;
+}
+.window.dragging{opacity:.92;transition:none}
+.titlebar{
+  display:flex;align-items:center;
+  height:38px;padding:0 12px;
+  background:linear-gradient(180deg,#f7f0f3,#f0e4ea);
+  border-bottom:1px solid rgba(210,170,185,.25);
+  flex-shrink:0;
+}
+.lights{display:flex;gap:7px;margin-right:12px}
+.lights button,.lights i{
+  width:12px;height:12px;border-radius:50%;
+  border:none;cursor:pointer;
+}
+.close{background:#ff5f57}
+.lights i{background:#febc2e;pointer-events:none}
+.zoom{background:#28c840}
+.wtitle{
+  flex:1;text-align:center;
+  font-size:.75rem;font-weight:500;color:var(--muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.wbody{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:0;
+  scrollbar-width:thin;
+  scrollbar-color:var(--pink) transparent;
+}
+.window.big .wbody{max-height:calc(100dvh - 80px)}
+
+/* =================== ABOUT WINDOW =================== */
+.about{padding:28px 32px 36px;user-select:text}
+.about-banner{
+  width:100%;max-height:260px;object-fit:cover;
+  border-radius:8px;margin-bottom:24px;
+  background:var(--pink-light);
+  min-height:180px;
+}
+.about h2{
+  font-family:var(--font-serif);font-style:italic;
+  font-size:1.8rem;margin-bottom:4px;
+}
+.about .eyebrow{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--muted);margin-bottom:20px;
+}
+.about h3{
+  font-family:var(--font-hand);font-size:1.15rem;
+  color:var(--pink-deep);margin:18px 0 4px;
+}
+.about p{font-size:.88rem;line-height:1.65;color:#5a4a4a;margin-bottom:6px}
+.about .skills-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.about .skills-tags span{
+  background:var(--pink-light);color:var(--pink-deep);
+  padding:4px 14px;border-radius:20px;
+  font-size:.75rem;font-weight:500;
+}
+
+/* =================== CONTACT WINDOW =================== */
+.contact{padding:28px 32px;user-select:text}
+.contact p{font-size:.88rem;margin-bottom:6px;line-height:1.6}
+.contact hr{border:none;border-top:1px solid #eee;margin:14px 0}
+.contact-list{margin-top:14px;font-size:.85rem}
+.contact-list>div{display:flex;gap:8px;margin-bottom:10px}
+.contact-list dt{font-weight:600;min-width:80px;color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+.contact-list dd{margin:0}
+.btn{
+  display:inline-block;margin-top:18px;
+  padding:10px 28px;border-radius:8px;
+  background:var(--pink-deep);color:#fff;
+  font-weight:600;font-size:.85rem;
+  text-decoration:none;transition:background .15s;
+}
+.btn:hover{background:#c44a6a;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--pink-deep);border:1.5px solid var(--pink-deep)}
+
+/* =================== KIND WORDS =================== */
+.txt{padding:28px 32px;user-select:text;font-size:.88rem;line-height:1.7}
+.txt p{margin-bottom:16px;color:#5a4a4a}
+.txt i{color:var(--muted);font-size:.82rem}
+
+/* =================== RESUME WINDOW =================== */
+.resume{padding:20px;text-align:center;user-select:text}
+.resume object{width:100%;height:60vh;border:1px solid #eee;border-radius:6px}
+.resume-actions{margin-top:14px;display:flex;gap:12px;justify-content:center}
+.resume p.muted{color:var(--muted);font-size:.82rem;margin-bottom:10px}
+
+/* =================== PROJECTS / FINDER =================== */
+.finder{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:20px;padding:24px 28px}
+.finder-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;font-size:.72rem;text-align:center;
+  transition:transform .12s;
+}
+.finder-item:hover{transform:scale(1.06)}
+.finder-item .ico{width:52px}
+
+/* =================== PROJECT STORY =================== */
+.story{padding:28px 32px 40px;user-select:text}
+.story-head{margin-bottom:24px}
+.story-head .eyebrow{
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--muted);margin-bottom:4px;
+}
+.story-head h2{
+  font-family:var(--font-serif);font-style:italic;
+  font-size:1.6rem;margin-bottom:8px;
+}
+.story-head .intro{font-size:.88rem;line-height:1.65;color:#5a4a4a}
+.story-section{margin-top:28px}
+.story-section h3{
+  font-family:var(--font-hand);font-size:1.1rem;
+  color:var(--pink-deep);margin-bottom:8px;
+}
+.story-section p{font-size:.85rem;line-height:1.65;color:#5a4a4a;margin-bottom:6px}
+.story blockquote{
+  font-family:var(--font-serif);font-style:italic;
+  font-size:1.05rem;line-height:1.5;
+  border-left:3px solid var(--pink);
+  padding:8px 0 8px 20px;
+  margin:20px 0;color:#7a5a5a;
+}
+.story .figs{display:grid;gap:16px;margin-top:14px}
+.story .figs.n2{grid-template-columns:1fr 1fr}
+.story figure{border-radius:8px;overflow:hidden}
+.story figure img{width:100%;border-radius:6px;background:var(--pink-light);min-height:100px}
+.story figcaption{font-size:.72rem;color:var(--muted);margin-top:6px;text-align:center}
+.story .ph{
+  background:var(--pink-light);border-radius:8px;
+  padding:40px;text-align:center;color:var(--muted);
+  font-size:.82rem;
+}
+
+/* =================== SECRET =================== */
+.secret{padding:40px 28px;text-align:center;user-select:text}
+.secret .big{font-size:3rem;margin-bottom:12px}
+.secret p{font-size:.9rem;line-height:1.6;color:#5a4a4a}
+.muted{color:var(--muted)!important;font-size:.82rem!important}
+
+/* =================== DOCK =================== */
+.dock{
+  position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
+  z-index:9998;
+  display:flex;align-items:center;gap:4px;
+  padding:6px 14px;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:18px;
+  border:1px solid rgba(220,180,195,.3);
+  box-shadow:0 4px 20px rgba(120,60,80,.1);
+}
+.dock-app{
+  width:44px;height:44px;
+  border-radius:11px;
+  display:grid;place-items:center;
+  font-size:1.35rem;
+  transition:transform .15s;
+  background:linear-gradient(135deg,var(--pink-light),#fff);
+  border:1px solid rgba(220,180,195,.2);
+}
+.dock-app:hover{transform:scale(1.2) translateY(-6px)}
+.dock-app span{
+  display:grid;place-items:center;
+  width:100%;height:100%;
+  border-radius:inherit;
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.5),transparent);
+}
+.dock-sep{width:1px;height:32px;background:rgba(200,160,175,.3);margin:0 6px}
+.open-me{position:relative}
+.open-me::after{
+  content:'open me';position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  font-size:.6rem;color:var(--muted);white-space:nowrap;
+  font-family:var(--font-hand);font-size:.75rem;
+}
+
+/* =================== SPARKLE TRAIL =================== */
+.sparkle-layer{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999;overflow:hidden}
+.sparkle{
+  position:fixed;
+  animation:spark .7s ease-out forwards;
+  pointer-events:none;
+  font-style:normal;
+}
+@keyframes spark{
+  0%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(0)}
+}
+
+/* =================== LIGHTBOX =================== */
+.lightbox{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.85);
+  display:grid;place-items:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s;
+}
+.lightbox.on{opacity:1;pointer-events:auto}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:8px}
+.lb-close,.lb-prev,.lb-next{
+  position:absolute;color:#fff;font-size:2rem;
+  width:48px;height:48px;display:grid;place-items:center;
+  border-radius:50%;transition:background .15s;
+}
+.lb-close{top:20px;right:20px}
+.lb-prev{left:20px;top:50%;transform:translateY(-50%)}
+.lb-next{right:20px;top:50%;transform:translateY(-50%)}
+.lb-close:hover,.lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,.15)}
+
+/* =================== RESPONSIVE =================== */
+@media(max-width:700px){
+  .menubar .left{gap:10px}
+  .status{display:none}
+  .sticky{width:175px;font-size:.72rem;left:2%;top:2%}
+  .welcome h1{font-size:clamp(2.4rem,12vw,3.6rem)}
+  .icon{width:72px}
+  .icon .ico{width:42px}
+  .icon .label{font-size:.62rem;max-width:70px}
+  .window{
+    left:4px!important;top:60px!important;
+    width:calc(100vw - 8px)!important;
+    max-height:calc(100dvh - 120px);
+  }
+  .window.big .wbody{max-height:calc(100dvh - 140px)}
+  .dock{bottom:6px;padding:5px 10px;gap:3px}
+  .dock-app{width:38px;height:38px;font-size:1.1rem}
+}
+  </style>
+</head>
+<body>
+
+  <!-- MENU BAR -->
+  <header class="menubar">
+    <div class="left">
+      <span class="mark" aria-hidden="true">✦</span>
+      <button class="mb-link strong" data-open="about">Khanh Xuan's Portfolio</button>
+      <button class="mb-link" data-open="contact">Contact</button>
+      <button class="mb-link" data-open="resume">Resume</button>
+    </div>
+    <div class="right">
+      <span class="status" aria-hidden="true">◐ ᯤ ▮▮▮▯</span>
+      <span id="clock"></span>
+    </div>
+  </header>
+
+  <!-- DESKTOP -->
+  <main class="desktop" id="desktop">
+
+    <div class="sticky" id="sticky">
+      <strong>To do:</strong>
+      <ul>
+        <li>Build an e-commerce empire ✦</li>
+        <li class="done">Learn Google Analytics</li>
+        <li>Master digital marketing strategies</li>
+        <li class="done">Complete SEO certification</li>
+        <li>Create data-driven campaigns</li>
+        <li>Land my dream internship ☆</li>
+      </ul>
+    </div>
+
+    <div class="welcome">
+      <p>welcome to my</p>
+      <h1 aria-label="portfolio.">portfolio.</h1>
+    </div>
+
+    <div id="icons"></div>
+    <div id="windows"></div>
+  </main>
+
+  <!-- DOCK -->
+  <nav class="dock" aria-label="Dock">
+    <button class="dock-app" data-open="about" title="About me"><span style="--c:#f4a7c0">☺</span></button>
+    <button class="dock-app" data-open="projects" title="Projects"><span style="--c:#8fc4f2">▤</span></button>
+    <button class="dock-app" data-open="skills" title="Skills"><span style="--c:#ffd36e">✿</span></button>
+    <button class="dock-app" data-open="kind" title="Kind words"><span style="--c:#b9e3a8">❝</span></button>
+    <button class="dock-app" data-open="contact" title="Contact"><span style="--c:#c9b6f2">✉</span></button>
+    <button class="dock-app" data-open="resume" title="Resume"><span style="--c:#ffffff; color:#d65a5a">PDF</span></button>
+    <i class="dock-sep"></i>
+    <button class="dock-app open-me" data-open="secret" title="open me"><span style="--c:#c99a6b">♡</span></button>
+  </nav>
+
+  <script>
+  /* =========================================================
+     KHANH XUAN NGUYEN — PORTFOLIO DATA
+     ========================================================= */
+  const PROJECTS = [
+    {
+      id: 'p1', name: 'Project 01 (E-Commerce Strategy)', x: 78, y: 12, layout: 'story',
+      title: 'E-Commerce Growth Strategy', type: 'Digital Marketing · E-Commerce',
+      intro: 'Developed a comprehensive e-commerce growth strategy for a local Vietnamese fashion brand, increasing online revenue by 150% over 3 months through data-driven marketing campaigns and UX optimization.',
+      hero: [],
+      sections: [
+        { heading: 'Project Overview', text: [
+          'Partnered with a local fashion brand to revamp their online presence and digital sales funnel. Conducted market research, competitor analysis, and consumer behavior studies specific to the Vietnamese e-commerce landscape.',
+        ] },
+        { heading: 'Research & Analysis', text: [
+          'Analyzed customer journey data using Google Analytics and Hotjar. Identified key drop-off points in the purchase funnel and developed targeted solutions for each stage, from awareness to conversion.',
+        ] },
+        { heading: 'Strategy & Execution', text: [
+          'Implemented a multi-channel marketing approach combining Facebook Ads, TikTok Shop, and email marketing. Optimized product listings with SEO-driven content and A/B tested landing pages.',
+        ] },
+        { heading: 'Results', text: [
+          '150% increase in online revenue within 3 months. 45% improvement in conversion rate. 200% growth in social media engagement. Successfully launched on TikTok Shop with 500+ orders in the first month.',
+        ] },
+      ],
+    },
+    {
+      id: 'p2', name: 'Project 02 (Social Media Campaign)', x: 88, y: 28, layout: 'story',
+      title: 'Social Media Marketing Campaign', type: 'Content Marketing · Social Media',
+      intro: 'Designed and executed a viral social media campaign for a university startup event, reaching 50,000+ students across Ho Chi Minh City.',
+      hero: [],
+      sections: [
+        { heading: 'The Challenge', text: [
+          'The university startup event needed to reach a wider audience beyond campus boundaries. With a limited budget, creative and organic strategies were essential.',
+        ] },
+        { heading: 'Creative Strategy', text: [
+          'Developed a content calendar with engaging formats: behind-the-scenes reels, speaker spotlights, student testimonials, and interactive stories. Leveraged trending audio and hashtag challenges on TikTok and Instagram.',
+        ] },
+        { heading: 'Execution & Impact', text: [
+          'Managed a team of 5 content creators. Produced 60+ pieces of content across platforms. The campaign achieved 50K+ reach, 8K+ engagements, and contributed to a sold-out event with 1,200 attendees.',
+        ] },
+      ],
+    },
+    {
+      id: 'p3', name: 'Project 03 (Market Research)', x: 76, y: 45, layout: 'story',
+      title: 'Consumer Behavior Research', type: 'Market Research · Data Analysis',
+      intro: 'Conducted in-depth market research on Gen Z shopping behavior in Vietnamese e-commerce platforms, published as part of my senior thesis.',
+      hero: [],
+      sections: [
+        { heading: 'Research Question', text: [
+          'How do Gen Z consumers in Vietnam make purchasing decisions on e-commerce platforms, and what factors influence their brand loyalty?',
+        ] },
+        { heading: 'Methodology', text: [
+          'Mixed-methods approach combining quantitative surveys (500+ respondents) with qualitative in-depth interviews (20 participants). Data analyzed using SPSS and thematic coding.',
+        ] },
+        { heading: 'Key Findings', text: [
+          'Social proof (reviews, KOL recommendations) is the #1 purchase driver for Gen Z. Price sensitivity decreases when brands demonstrate authenticity and social responsibility. Live-stream shopping is the fastest-growing channel.',
+        ] },
+      ],
+    },
+    {
+      id: 'p4', name: 'Project 04 (Brand Identity)', x: 89, y: 58, layout: 'story',
+      title: 'Brand Identity Design', type: 'Branding · Visual Design',
+      intro: 'Created a complete brand identity for a student-run sustainable fashion e-commerce startup, including logo, color palette, typography, and brand guidelines.',
+      hero: [],
+      sections: [
+        { heading: 'The Brief', text: [
+          'A student-founded sustainable fashion platform needed a brand identity that communicated eco-consciousness while appealing to young Vietnamese consumers.',
+        ] },
+        { heading: 'Design Process', text: [
+          'Started with mood boards and brand archetype research. Developed 3 concept directions before refining the final identity. The visual language combines natural textures with modern minimalism.',
+        ] },
+        { heading: 'Deliverables', text: [
+          'Complete brand guidelines document, logo suite (primary, secondary, icon), color palette, typography system, social media templates, packaging design mockups, and website style guide.',
+        ] },
+      ],
+    },
+    {
+      id: 'p5', name: 'Project 05 (SEO & Content)', x: 68, y: 70, layout: 'story',
+      title: 'SEO & Content Strategy', type: 'SEO · Content Marketing',
+      intro: 'Developed and implemented an SEO-driven content strategy for a local business, achieving first-page Google rankings for 15+ target keywords.',
+      hero: [],
+      sections: [
+        { heading: 'Initial Audit', text: [
+          'Performed a comprehensive SEO audit using Ahrefs and SEMrush. Identified technical issues, content gaps, and backlink opportunities. The site had zero organic traffic at the start.',
+        ] },
+        { heading: 'Content Strategy', text: [
+          'Created a keyword-mapped content plan with pillar pages and supporting blog posts. Focused on local SEO optimization for the Ho Chi Minh City market. Wrote and optimized 30+ articles.',
+        ] },
+        { heading: 'Results', text: [
+          'Achieved first-page rankings for 15+ keywords within 4 months. Organic traffic grew from 0 to 5,000+ monthly visitors. Generated 200+ qualified leads through content marketing.',
+        ] },
+      ],
+    },
+    {
+      id: 'p6', name: 'Project 06 (UX Redesign)', x: 82, y: 82, layout: 'story',
+      title: 'E-Commerce UX Redesign', type: 'UX Design · E-Commerce',
+      intro: 'Redesigned the user experience of an e-commerce mobile app, reducing cart abandonment by 35% and improving the overall customer satisfaction score.',
+      hero: [],
+      sections: [
+        { heading: 'Problem Statement', text: [
+          'The existing mobile app had a 72% cart abandonment rate, significantly above the industry average. User feedback indicated a confusing checkout process and poor navigation.',
+        ] },
+        { heading: 'UX Research', text: [
+          'Conducted usability testing with 15 participants, created user journey maps, and analyzed heatmaps. Identified 8 critical pain points in the user flow from product discovery to checkout.',
+        ] },
+        { heading: 'Design Solution', text: [
+          'Simplified the checkout to 3 steps (from 7). Added guest checkout, smart address autofill, and multiple payment options including MoMo and ZaloPay. Redesigned product cards with clearer CTAs.',
+        ] },
+        { heading: 'Impact', text: [
+          'Cart abandonment decreased by 35%. Customer satisfaction score improved from 3.2 to 4.6 out of 5. Average order value increased by 22% due to improved product recommendation UX.',
+        ] },
+      ],
+    },
+  ];
+
+  const ICONS = [
+    { id: 'about',  name: 'About Me',       kind: 'folder', x: 14, y: 62 },
+    { id: 'resume', name: 'Resume.pdf',     kind: 'doc',    x: 6,  y: 48 },
+    { id: 'kind',   name: 'Kind words.txt', kind: 'txt',    x: 28, y: 80 },
+    ...PROJECTS.map(p => ({ id: p.id, name: p.name, kind: 'folder', x: p.x, y: p.y })),
+    { id: 'secret', name: "Don't Look",     kind: 'trash',  x: 94, y: 88 },
+  ];
+
+  /* ---------- Window contents ---------- */
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function fig(im) {
+    return `<figure class="${im.wide ? 'wide' : ''}">
+      <img src="${esc(im.src)}" alt="${esc(im.caption)}" loading="lazy" onerror="imgMissing(this)">
+      <figcaption>${esc(im.caption)}</figcaption>
+    </figure>`;
+  }
+  function imgMissing(img) {
+    const ph = document.createElement('div');
+    ph.className = 'ph';
+    ph.textContent = img.alt;
+    img.replaceWith(ph);
+  }
+
+  function storyBody(p) {
+    return `
+      <article class="story">
+        <header class="story-head">
+          <p class="eyebrow">${esc(p.type)}</p>
+          <h2>${esc(p.title)}</h2>
+          <p class="intro">${esc(p.intro)}</p>
+        </header>
+        ${p.hero && p.hero.length ? `<div class="story-hero"><div class="pair n${p.hero.length}">${p.hero.map(fig).join('')}</div></div>` : ''}
+        ${p.sections.map(s => `
+          <section class="story-section">
+            <h3>${esc(s.heading)}</h3>
+            ${s.text.map(t => `<p>${esc(t)}</p>`).join('')}
+            ${s.images ? `<div class="figs n${s.images.length}">${s.images.map(fig).join('')}</div>` : ''}
+          </section>`).join('')}
+      </article>`;
+  }
+
+  function projectBody(p) {
+    return storyBody(p);
+  }
+
+  const WINDOWS = {
+    about: { title: 'About Me', w: 720, big: true, body: `
+      <div class="about">
+        <div class="about-banner" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0,#f48fb1);display:flex;align-items:center;justify-content:center;min-height:200px;border-radius:8px;margin-bottom:24px">
+          <div style="text-align:center;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.15)">
+            <div style="font-size:3rem;margin-bottom:8px">✦</div>
+            <div style="font-family:var(--font-serif);font-style:italic;font-size:1.4rem">Khanh Xuan Nguyen</div>
+          </div>
+        </div>
+        <div class="about-text">
+          <h2>Hi, I'm Khanh Xuan ✦</h2>
+          <p class="eyebrow">E-Commerce Student & Digital Marketing Enthusiast</p>
+
+          <h3>About Me</h3>
+          <p>I'm a senior (4th year) E-Commerce student at the <strong>University of Economics and Law, Vietnam National University – Ho Chi Minh City</strong>. I'm passionate about the intersection of technology, business, and consumer behavior in the digital age.</p>
+
+          <h3>What I Do</h3>
+          <p>I specialize in crafting data-driven digital marketing strategies, optimizing e-commerce experiences, and building brands that resonate with young Vietnamese consumers. From SEO and content marketing to social media campaigns and UX design, I bring a holistic approach to digital commerce.</p>
+
+          <h3>My Approach</h3>
+          <p>I believe great e-commerce is about understanding people first and technology second. Every project I take on starts with deep research into consumer behavior and ends with measurable results that drive business growth.</p>
+
+          <h3>Currently</h3>
+          <p>📚 Completing my senior thesis on Gen Z consumer behavior<br>
+          🔍 Exploring opportunities in digital marketing & e-commerce management<br>
+          🌱 Always learning — currently diving into AI-powered marketing automation</p>
+
+          <div class="skills-tags">
+            <span>E-Commerce</span>
+            <span>Digital Marketing</span>
+            <span>SEO / SEM</span>
+            <span>Social Media</span>
+            <span>Content Strategy</span>
+            <span>Data Analytics</span>
+            <span>UX Research</span>
+            <span>Brand Strategy</span>
+            <span>Google Analytics</span>
+            <span>Facebook Ads</span>
+            <span>TikTok Marketing</span>
+            <span>Shopee / Lazada</span>
+          </div>
+        </div>
+      </div>` },
+    projects: { title: 'Projects', w: 520, body: () => `
+      <div class="finder">${PROJECTS.map(p => `
+        <button class="finder-item" data-open="${p.id}">${folderSVG()}<span>${esc(p.name)}</span></button>`).join('')}
+      </div>` },
+    skills: { title: 'Skills & Tools', w: 600, body: `
+      <div class="about" style="padding:28px 32px">
+        <h2 style="font-family:var(--font-serif);font-style:italic;font-size:1.5rem;margin-bottom:20px">Skills & Tools ✦</h2>
+
+        <h3 style="font-family:var(--font-hand);font-size:1.1rem;color:var(--pink-deep);margin:14px 0 6px">E-Commerce Platforms</h3>
+        <p style="font-size:.85rem;line-height:1.7;color:#5a4a4a">Shopee Seller Center · Lazada Seller Center · TikTok Shop · Shopify · WooCommerce</p>
+
+        <h3 style="font-family:var(--font-hand);font-size:1.1rem;color:var(--pink-deep);margin:14px 0 6px">Digital Marketing</h3>
+        <p style="font-size:.85rem;line-height:1.7;color:#5a4a4a">Google Ads · Facebook/Meta Ads · TikTok Ads · Email Marketing (Mailchimp) · Influencer Marketing · KOL Management</p>
+
+        <h3 style="font-family:var(--font-hand);font-size:1.1rem;color:var(--pink-deep);margin:14px 0 6px">Analytics & SEO</h3>
+        <p style="font-size:.85rem;line-height:1.7;color:#5a4a4a">Google Analytics 4 · Google Search Console · SEMrush · Ahrefs · Hotjar · SPSS</p>
+
+        <h3 style="font-family:var(--font-hand);font-size:1.1rem;color:var(--pink-deep);margin:14px 0 6px">Design & Content</h3>
+        <p style="font-size:.85rem;line-height:1.7;color:#5a4a4a">Canva · Figma · Adobe Photoshop · CapCut · Premiere Pro · Content Writing</p>
+
+        <h3 style="font-family:var(--font-hand);font-size:1.1rem;color:var(--pink-deep);margin:14px 0 6px">Languages</h3>
+        <p style="font-size:.85rem;line-height:1.7;color:#5a4a4a">Vietnamese (Native) · English (Professional working proficiency)</p>
+      </div>` },
+    kind: { title: 'Kind words.txt', w: 540, body: `
+      <div class="txt">
+        <p>"Khanh Xuan is one of the most dedicated and analytical students I've had the pleasure of mentoring. Her ability to translate data into actionable marketing strategies is truly impressive."<br><i>— Professor, University of Economics and Law</i></p>
+        <p>"Working with Khanh Xuan on our e-commerce project was a game-changer. She brought fresh ideas, executed flawlessly, and always backed her decisions with data. A true professional."<br><i>— Startup founder & project partner</i></p>
+        <p>"Khanh Xuan consistently demonstrated creativity, leadership, and a strong work ethic during her internship. She quickly adapted to our team culture and contributed meaningfully to our digital marketing efforts."<br><i>— Internship supervisor</i></p>
+        <p>"Her presentation on Gen Z consumer behavior was the best in the class. The depth of research and clarity of insights showed a level of maturity beyond her years."<br><i>— Senior thesis advisor</i></p>
+      </div>` },
+    contact: { title: 'New Message', w: 500, body: `
+      <div class="contact">
+        <p><b>To:</b> Khanh Xuan Nguyen</p>
+        <p><b>Subject:</b> Let's create something amazing together</p>
+        <hr>
+        <p>Open to internships, freelance projects, collaborations, and full-time opportunities in e-commerce and digital marketing.</p>
+        <dl class="contact-list">
+          <div><dt>Email</dt><dd><a href="mailto:xuannk@example.com">xuannk@example.com</a></dd></div>
+          <div><dt>Phone</dt><dd><a href="tel:+84123456789">+84 123 456 789</a></dd></div>
+          <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/khanhxuannguyen" target="_blank" rel="noopener">Khanh Xuan Nguyen</a></dd></div>
+          <div><dt>Location</dt><dd>Ho Chi Minh City, Vietnam</dd></div>
+        </dl>
+        <a class="btn" href="mailto:xuannk@example.com">Email me</a>
+      </div>` },
+    resume: { title: 'Resume.pdf', w: 780, big: true, body: `
+      <div class="resume">
+        <object data="resume.pdf" type="application/pdf">
+          <p class="muted">Your browser can't show the PDF here. Use the buttons below to open or download it.</p>
+        </object>
+        <div class="resume-actions">
+          <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Open in new tab</a>
+          <a class="btn ghost" href="resume.pdf" download="Khanh Xuan Nguyen CV.pdf">Download</a>
+        </div>
+      </div>` },
+    secret: { title: "Don't Look", w: 380, body: `
+      <div class="secret">
+        <p class="big">👀</p>
+        <p>You looked! Here you'll find my 3AM study notes, random business ideas, and too many marketing memes.</p>
+        <p class="muted">Every great campaign starts with a wild idea ✦</p>
+      </div>` },
+  };
+  PROJECTS.forEach(p => WINDOWS[p.id] = { title: p.name, w: 940, big: true, body: () => projectBody(p) });
+
+  /* ---------- Icons ---------- */
+  function folderSVG() {
+    return `<svg viewBox="0 0 64 52" class="ico"><path d="M2 8a4 4 0 0 1 4-4h18l5 5h29a4 4 0 0 1 4 4v33a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#e48aab"/><path d="M2 16a4 4 0 0 1 4-4h52a4 4 0 0 1 4 4v30a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#f4b3c9"/></svg>`;
+  }
+  const ART = {
+    folder: folderSVG,
+    doc: () => `<svg viewBox="0 0 48 60" class="ico doc"><path d="M4 2h28l12 12v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#ccc"/><path d="M32 2v12h12" fill="#eee" stroke="#ccc"/><text x="23" y="44" text-anchor="middle" font-size="10" font-weight="700" fill="#d65a5a" font-family="Inter">PDF</text></svg>`,
+    txt: () => `<svg viewBox="0 0 48 60" class="ico doc"><path d="M4 2h28l12 12v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#ccc"/><path d="M32 2v12h12" fill="#eee" stroke="#ccc"/><g stroke="#bbb" stroke-width="2"><line x1="10" y1="26" x2="38" y2="26"/><line x1="10" y1="33" x2="38" y2="33"/><line x1="10" y1="40" x2="30" y2="40"/></g></svg>`,
+    trash: () => `<svg viewBox="0 0 48 60" class="ico doc"><rect x="6" y="10" width="36" height="6" rx="2" fill="#d9d9de"/><path d="M9 18h30l-3 38H12z" fill="#ececf0" stroke="#c5c5cc"/><g stroke="#c5c5cc" stroke-width="1.5"><line x1="18" y1="24" x2="19" y2="50"/><line x1="24" y1="24" x2="24" y2="50"/><line x1="30" y1="24" x2="29" y2="50"/></g></svg>`,
+  };
+
+  const desktop = document.getElementById('desktop');
+  const iconLayer = document.getElementById('icons');
+  const winLayer = document.getElementById('windows');
+  const isMobile = () => matchMedia('(max-width: 700px)').matches;
+
+  ICONS.forEach(ic => {
+    const el = document.createElement('button');
+    el.className = 'icon';
+    el.dataset.id = ic.id;
+    el.style.left = ic.x + '%';
+    el.style.top = ic.y + '%';
+    el.innerHTML = ART[ic.kind]() + `<span class="label">${esc(ic.name)}</span>`;
+    iconLayer.appendChild(el);
+    makeDraggable(el, el, { onClick: () => openWin(ic.id), keepInside: true });
+  });
+
+  /* ---------- Windows ---------- */
+  let z = 10, offset = 0;
+  const open = {};
+
+  function openWin(id) {
+    const def = WINDOWS[id];
+    if (!def) return;
+    if (open[id]) { focus(open[id]); return; }
+    const w = document.createElement('section');
+    w.className = 'window';
+    w.setAttribute('role', 'dialog');
+    w.setAttribute('aria-label', def.title);
+    const width = Math.min(def.w, desktop.clientWidth - 24);
+    w.style.width = width + 'px';
+    w.style.left = Math.max(12, (desktop.clientWidth - width) / 2 + offset) + 'px';
+    w.style.top = Math.max(12, (def.big ? 16 : 60) + offset) + 'px';
+    if (def.big) w.classList.add('big');
+    offset = (offset + 28) % 140;
+    w.innerHTML = `
+      <div class="titlebar">
+        <span class="lights"><button class="close" aria-label="Close"></button><i></i><button class="zoom" aria-label="Full screen"></button></span>
+        <span class="wtitle">${esc(def.title)}</span>
+      </div>
+      <div class="wbody">${typeof def.body === 'function' ? def.body() : def.body}</div>`;
+    winLayer.appendChild(w);
+    open[id] = w;
+    focus(w);
+    w.addEventListener('pointerdown', () => focus(w));
+    w.querySelector('.close').addEventListener('click', e => { e.stopPropagation(); w.remove(); delete open[id]; });
+    w.querySelector('.zoom').addEventListener('click', e => { e.stopPropagation(); w.classList.toggle('max'); });
+    w.querySelector('.titlebar').addEventListener('dblclick', () => w.classList.toggle('max'));
+    if (!isMobile()) makeDraggable(w, w.querySelector('.titlebar'), {});
+  }
+  function focus(w) { w.style.zIndex = ++z; }
+
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-open]');
+    if (t) openWin(t.dataset.open);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const top = [...winLayer.children].sort((a, b) => b.style.zIndex - a.style.zIndex)[0];
+      if (top) top.querySelector('.close').click();
+    }
+  });
+
+  /* ---------- Dragging ---------- */
+  function makeDraggable(el, handle, { onClick, keepInside }) {
+    let sx, sy, ox, oy, moved = false, dragging = false;
+    handle.addEventListener('pointerdown', e => {
+      if (e.target.closest('.close, .zoom') || el.classList.contains('max')) return;
+      if (isMobile()) return;
+      dragging = true; moved = false;
+      sx = e.clientX; sy = e.clientY;
+      ox = el.offsetLeft; oy = el.offsetTop;
+      handle.setPointerCapture(e.pointerId);
+      el.classList.add('dragging');
+    });
+    handle.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+      const maxX = desktop.clientWidth - 40, maxY = desktop.clientHeight - 40;
+      el.style.left = Math.min(maxX, Math.max(-el.offsetWidth + 80, ox + dx)) + 'px';
+      el.style.top = Math.min(maxY, Math.max(0, oy + dy)) + 'px';
+    });
+    const end = () => {
+      if (!dragging) return;
+      dragging = false; el.classList.remove('dragging');
+    };
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', end);
+    if (onClick) handle.addEventListener('click', () => { if (!moved) onClick(); moved = false; });
+  }
+
+  /* ---------- "portfolio." letters grow near the mouse ---------- */
+  (() => {
+    const h1 = document.querySelector('.welcome h1');
+    const word = h1.textContent;
+    h1.setAttribute('aria-label', word);
+    h1.innerHTML = [...word].map(ch => `<span class="ltr" aria-hidden="true">${ch}</span>`).join('');
+    const letters = [...h1.querySelectorAll('.ltr')];
+    const reach = 160;
+    const grow = 0.45;
+    h1.addEventListener('pointermove', e => {
+      letters.forEach(l => {
+        const r = l.getBoundingClientRect();
+        const d = Math.abs(e.clientX - (r.left + r.width / 2));
+        const t = Math.max(0, 1 - d / reach);
+        const ease = t * t * (3 - 2 * t);
+        l.style.transform = `translateY(${-ease * 6}px) scale(${1 + ease * grow})`;
+        l.style.marginInline = `${ease * 0.11}em`;
+        l.style.color = ease > .55 ? 'var(--pink-deep)' : '';
+      });
+    });
+    h1.addEventListener('pointerleave', () => letters.forEach(l => { l.style.transform = ''; l.style.color = ''; l.style.marginInline = ''; }));
+  })();
+
+  /* ---------- Pink sparkle trail ---------- */
+  (() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const layer = document.createElement('div');
+    layer.className = 'sparkle-layer';
+    document.body.appendChild(layer);
+    const colors = ['#f48fb1', '#f8bbd0', '#ec6fa0', '#ffd1e3', '#e75b93'];
+    const shapes = ['✦', '✧', '⋆', '•'];
+    let last = 0;
+    document.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      const now = performance.now();
+      if (now - last < 28) return;
+      last = now;
+      if (layer.childElementCount > 60) return;
+      const s = document.createElement('span');
+      s.className = 'sparkle';
+      s.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+      const size = 8 + Math.random() * 12;
+      s.style.cssText = `left:${e.clientX}px; top:${e.clientY}px; font-size:${size}px; color:${colors[Math.floor(Math.random() * colors.length)]};
+        --dx:${(Math.random() - .5) * 40}px; --dy:${12 + Math.random() * 30}px; --r:${(Math.random() - .5) * 180}deg;`;
+      layer.appendChild(s);
+      s.addEventListener('animationend', () => s.remove());
+    });
+  })();
+
+  /* ---------- Clock & sticky ---------- */
+  const clock = document.getElementById('clock');
+  const tick = () => clock.textContent = new Date().toLocaleString([], isMobile()
+    ? { hour: 'numeric', minute: '2-digit' }
+    : { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  tick(); setInterval(tick, 15000);
+  makeDraggable(document.getElementById('sticky'), document.getElementById('sticky'), {});
+
+  /* ---------- Lightbox ---------- */
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = `<button class="lb-close" aria-label="Close">×</button>
+    <button class="lb-prev" aria-label="Previous">‹</button>
+    <img alt=""><button class="lb-next" aria-label="Next">›</button>`;
+  document.body.appendChild(lb);
+  lb.querySelector('.lb-close').onclick = () => lb.classList.remove('on');
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('on'); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('on')) return;
+    if (e.key === 'Escape') { lb.classList.remove('on'); e.stopImmediatePropagation(); }
+  }, true);
+
+  document.addEventListener('click', e => {
+    const fi = e.target.closest('.story figure img');
+    if (fi) {
+      lb.querySelector('img').src = fi.src;
+      lb.classList.add('on');
+    }
+  });
+  </script>
+</body>
+</html>

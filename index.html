@@ -547,6 +547,14 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
     { id: 'about',  name: 'About Me',       kind: 'folder', x: 14, y: 62 },
     { id: 'resume', name: 'Resume.pdf',     kind: 'doc',    x: 6,  y: 48 },
     { id: 'kind',   name: 'Kind words.txt', kind: 'txt',    x: 28, y: 80 },
+    // New Music section
+    { id: 'music',  name: 'My Favorite Songs', kind: 'folder', x: 40, y: 70 },
+    ...PROJECTS.map(p => ({ id: p.id, name: p.name, kind: 'folder', x: p.x, y: p.y })),
+    { id: 'secret', name: "Don't Look",     kind: 'trash',  x: 94, y: 88 },
+  ];
+    { id: 'about',  name: 'About Me',       kind: 'folder', x: 14, y: 62 },
+    { id: 'resume', name: 'Resume.pdf',     kind: 'doc',    x: 6,  y: 48 },
+    { id: 'kind',   name: 'Kind words.txt', kind: 'txt',    x: 28, y: 80 },
     ...PROJECTS.map(p => ({ id: p.id, name: p.name, kind: 'folder', x: p.x, y: p.y })),
     { id: 'secret', name: "Don't Look",     kind: 'trash',  x: 94, y: 88 },
   ];
@@ -661,6 +669,12 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
         <p>"Working with Khanh Xuan on our e-commerce project was a game-changer. She brought fresh ideas, executed flawlessly, and always backed her decisions with data. A true professional."<br><i>— Startup founder & project partner</i></p>
         <p>"Khanh Xuan consistently demonstrated creativity, leadership, and a strong work ethic during her internship. She quickly adapted to our team culture and contributed meaningfully to our digital marketing efforts."<br><i>— Internship supervisor</i></p>
         <p>"Her presentation on Gen Z consumer behavior was the best in the class. The depth of research and clarity of insights showed a level of maturity beyond her years."<br><i>— Senior thesis advisor</i></p>
+      </div>` },
+    music: { title: 'My Favorite Songs', w: 560, body: `
+      <div class="music">
+        <h2 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:12px">My Favorite Songs</h2>
+        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" width="100%" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:8px">Click a track to play directly from Spotify.</p>
       </div>` },
     contact: { title: 'New Message', w: 500, body: `
       <div class="contact">

@@ -383,6 +383,7 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
     <div class="left">
       <span class="mark" aria-hidden="true">✦</span>
       <button class="mb-link strong" data-open="about">Khanh Xuan's Portfolio</button>
+      <button class="mb-link" data-open="music">Playlist ♫</button>
       <button class="mb-link" data-open="contact">Contact</button>
       <button class="mb-link" data-open="resume">Resume</button>
     </div>
@@ -420,6 +421,7 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
   <nav class="dock" aria-label="Dock">
     <button class="dock-app" data-open="about" title="About me"><span style="--c:#f4a7c0">☺</span></button>
     <button class="dock-app" data-open="projects" title="Projects"><span style="--c:#8fc4f2">▤</span></button>
+    <button class="dock-app" data-open="music" title="Spotify Playlist"><span style="--c:#1db954">🎧</span></button>
     <button class="dock-app" data-open="skills" title="Skills"><span style="--c:#ffd36e">✿</span></button>
     <button class="dock-app" data-open="kind" title="Kind words"><span style="--c:#b9e3a8">❝</span></button>
     <button class="dock-app" data-open="contact" title="Contact"><span style="--c:#c9b6f2">✉</span></button>
@@ -547,14 +549,7 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
     { id: 'about',  name: 'About Me',       kind: 'folder', x: 14, y: 62 },
     { id: 'resume', name: 'Resume.pdf',     kind: 'doc',    x: 6,  y: 48 },
     { id: 'kind',   name: 'Kind words.txt', kind: 'txt',    x: 28, y: 80 },
-    // New Music section
-    { id: 'music',  name: 'My Favorite Songs', kind: 'folder', x: 40, y: 70 },
-    ...PROJECTS.map(p => ({ id: p.id, name: p.name, kind: 'folder', x: p.x, y: p.y })),
-    { id: 'secret', name: "Don't Look",     kind: 'trash',  x: 94, y: 88 },
-  ];
-    { id: 'about',  name: 'About Me',       kind: 'folder', x: 14, y: 62 },
-    { id: 'resume', name: 'Resume.pdf',     kind: 'doc',    x: 6,  y: 48 },
-    { id: 'kind',   name: 'Kind words.txt', kind: 'txt',    x: 28, y: 80 },
+    { id: 'music',  name: 'My Playlist 🎵', kind: 'music',  x: 40, y: 70 },
     ...PROJECTS.map(p => ({ id: p.id, name: p.name, kind: 'folder', x: p.x, y: p.y })),
     { id: 'secret', name: "Don't Look",     kind: 'trash',  x: 94, y: 88 },
   ];
@@ -670,11 +665,17 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
         <p>"Khanh Xuan consistently demonstrated creativity, leadership, and a strong work ethic during her internship. She quickly adapted to our team culture and contributed meaningfully to our digital marketing efforts."<br><i>— Internship supervisor</i></p>
         <p>"Her presentation on Gen Z consumer behavior was the best in the class. The depth of research and clarity of insights showed a level of maturity beyond her years."<br><i>— Senior thesis advisor</i></p>
       </div>` },
-    music: { title: 'My Favorite Songs', w: 560, body: `
-      <div class="music">
-        <h2 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:12px">My Favorite Songs</h2>
-        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" width="100%" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-        <p style="font-size:.85rem;color:var(--muted);margin-top:8px">Click a track to play directly from Spotify.</p>
+    music: { title: 'My Favorite Songs ♫', w: 560, body: `
+      <div class="music" style="padding:22px 24px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="width:44px;height:44px;background:#1db954;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;color:#fff;box-shadow:0 4px 12px rgba(29,185,84,.3)">🎧</div>
+          <div>
+            <h3 style="font-size:1.05rem;font-weight:600;margin:0 0 3px">Khanh Xuan's Study & Vibe Playlist</h3>
+            <p style="font-size:.78rem;color:var(--muted);margin:0">Lo-fi, Chill & Focus beats for studying e-commerce & marketing</p>
+          </div>
+        </div>
+        <iframe style="border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08);display:block" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:12px;text-align:center">💡 Bấm nút Play trên Spotify widget ở trên để phát nhạc trực tiếp nhé!</p>
       </div>` },
     contact: { title: 'New Message', w: 500, body: `
       <div class="contact">
@@ -715,6 +716,7 @@ button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
   }
   const ART = {
     folder: folderSVG,
+    music: () => `<svg viewBox="0 0 54 54" class="ico" fill="none"><rect width="52" height="52" rx="14" fill="#1e293b"/><circle cx="26" cy="26" r="16" fill="#0f172a" stroke="#334155" stroke-width="2"/><circle cx="26" cy="26" r="6" fill="#1db954"/><circle cx="26" cy="26" r="2" fill="#fff"/><path d="M18 20c4.5-1.5 10-1.5 15 0M19 25c3.5-1 8-1 12 0M21 29c2.7-.8 6.3-.8 9.5 0" stroke="#1db954" stroke-width="2" stroke-linecap="round"/></svg>`,
     doc: () => `<svg viewBox="0 0 48 60" class="ico doc"><path d="M4 2h28l12 12v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#ccc"/><path d="M32 2v12h12" fill="#eee" stroke="#ccc"/><text x="23" y="44" text-anchor="middle" font-size="10" font-weight="700" fill="#d65a5a" font-family="Inter">PDF</text></svg>`,
     txt: () => `<svg viewBox="0 0 48 60" class="ico doc"><path d="M4 2h28l12 12v42a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#ccc"/><path d="M32 2v12h12" fill="#eee" stroke="#ccc"/><g stroke="#bbb" stroke-width="2"><line x1="10" y1="26" x2="38" y2="26"/><line x1="10" y1="33" x2="38" y2="33"/><line x1="10" y1="40" x2="30" y2="40"/></g></svg>`,
     trash: () => `<svg viewBox="0 0 48 60" class="ico doc"><rect x="6" y="10" width="36" height="6" rx="2" fill="#d9d9de"/><path d="M9 18h30l-3 38H12z" fill="#ececf0" stroke="#c5c5cc"/><g stroke="#c5c5cc" stroke-width="1.5"><line x1="18" y1="24" x2="19" y2="50"/><line x1="24" y1="24" x2="24" y2="50"/><line x1="30" y1="24" x2="29" y2="50"/></g></svg>`,
